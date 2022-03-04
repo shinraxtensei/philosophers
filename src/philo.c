@@ -6,59 +6,65 @@
 /*   By: ahouari <ahouari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 11:47:05 by ahouari           #+#    #+#             */
-/*   Updated: 2022/02/27 11:17:17 by ahouari          ###   ########.fr       */
+/*   Updated: 2022/03/04 08:50:17 by ahouari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	join_and_free_philos(t_info *info)
+void	error(int error)
 {
-	int		i;
-
-	i = 0;
-	while (i < info->num_of_philo)
-	{
-		pthread_join(info->philos[i].thread, NULL);
-		pthread_mutex_destroy(&info->philos[i++].check_mutex);
-	}
-	free(info->philos);
-	i = 0;
-	while (i < info->num_of_philo)
-		pthread_mutex_destroy(&info->forks[i++]);
-	free(info->forks);
+	if (error == 1)
+		printf("Wrong amount of args.\n");
+	else if (error == 2)
+		printf("Error while parsing.\n");
+	else if (error == 3)
+		printf("Error while creating threads.\n");
+	return ;
 }
 
-static void	create_philos(t_info *info)
+void	destroy_philos(t_data *data, t_philos *philo)
+{
+	int	i;
+
+	i = -1;
+	while (++i < data->nb_philos)
+		pthread_join(philo[i].philo_thread, NULL);
+	i = -1;
+	while (++i < data->nb_philos)
+		pthread_mutex_destroy(&data->fork_mutex[i]);
+	pthread_mutex_destroy(&data->action_mutex);
+}
+
+int	init_routine(t_data *data)
 {
 	int			i;
-	pthread_t	thread;
+	t_philos	*philo;
 
-	gettimeofday(&info->create_at, NULL);
 	i = 0;
-	while (i < info->num_of_philo)
+	philo = data->philos;
+	data->time_birth = timestamp();
+	while (i < data->nb_philos)
 	{
-		info->philos[i].last_time_to_eat = info->create_at;
-		pthread_create(&info->philos[i].thread, NULL, \
-			philos_life, &info->philos[i]);
-		pthread_create(&thread, NULL, monitor, &info->philos[i]);
-		pthread_detach(thread);
-		++i;
+		if (pthread_create(&philo[i].philo_thread, NULL, &routine, &philo[i]))
+			return (false);
+		philo[i].time_eat = timestamp();
+		i++;
 	}
-	if (info->num_of_must_eat != 0)
-	{
-		pthread_create(&thread, NULL, monitor_each_must_eat, info);
-		pthread_detach(thread);
-	}
+	dead_check(data, data->philos);
+	destroy_philos(data, philo);
+	return (true);
 }
 
-int main (int ac, char **av)
+int	main(int ac, char **av)
 {
-    t_info info;
-    memset(&info,0,sizeof(info));
-    if (pimp_my_philos(&info, ac, av))
-        return (1);
-    create_philos(&info);
-	join_and_free_philos(&info);
-	return (0);
+	t_data	data;
+
+	if (ac != 5 && ac != 6)
+		return (error(1), false);
+	if (!(parse_all(&data, av)))
+		return (error(2), false);
+	if (!(init_routine(&data)))
+		return (error(3), false);
+	return (true);
 }

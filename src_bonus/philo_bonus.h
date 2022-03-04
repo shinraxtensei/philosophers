@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ahouari <ahouari@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/21 11:47:22 by ahouari           #+#    #+#             */
-/*   Updated: 2022/03/04 09:42:06 by ahouari          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef PHILO_H
 # define PHILO_H
 
@@ -20,7 +8,11 @@
 # include <pthread.h>
 # include <stdlib.h>
 # include <stdint.h>
-# include <string.h>
+# include <semaphore.h>
+# include <fcntl.h>
+//# include <sys/stat.h>
+
+# define MAX_PHILO 200
 
 typedef struct s_philos {
 	int					id;
@@ -41,12 +33,10 @@ typedef struct s_data {
 	int					dead;
 	int					all_ate;
 	long long			time_birth;
-
-	pthread_mutex_t		*fork_mutex;
-	pthread_mutex_t		eat_mutex;
-	pthread_mutex_t		action_mutex;
-
-	t_philos			*philos;
+	sem_t				*forks;
+	sem_t				*action;
+	sem_t				*eat;
+	t_philos			philos[MAX_PHILO];
 }	t_data;
 
 void			error(int error);

@@ -6,67 +6,68 @@
 /*   By: ahouari <ahouari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 12:52:37 by ahouari           #+#    #+#             */
-/*   Updated: 2022/02/27 11:10:51 by ahouari          ###   ########.fr       */
+/*   Updated: 2022/03/04 08:34:07 by ahouari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	ft_atoi(const char *nptr)
+int	ft_atoi(const char *str)
 {
+	int	i;
 	int	result;
-	int	flag;
 
+	i = 0;
 	result = 0;
-	flag = 1;
-	if (*nptr == '-')
-		flag *= -1;
-	while ('0' <= *nptr && *nptr <= '9')
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] < '0' || str[i] > '9')
+		return (-1);
+	while (str[i] >= '0' && str[i] <= '9')
 	{
-		result *= 10;
-		result += *nptr++ - '0';
+		result = (result * 10) + (str[i] - '0');
+		i++;
 	}
-	return (result * flag);
+	if (str[i])
+		return (-1);
+	return (result);
 }
 
-int	is_digit(char *str)
+long long	timestamp(void)
 {
-	while (*str)
+	struct timeval	t;
+
+	gettimeofday(&t, NULL);
+	return ((t.tv_sec * 1000) + t.tv_usec / 1000);
+}
+
+long long	m_time(long long past, long long pres)
+{
+	return (pres - past);
+}
+
+void	s_sleep(long long time, t_data *data)
+{
+	long long	i;
+
+	i = timestamp();
+	while (!(data->dead))
 	{
-		if (!('0' <= *str && *str <= '9'))
-			return (0);
-		str++;
+		if (m_time(i, timestamp()) >= time)
+			break ;
+		usleep(50);
 	}
-	return (1);
 }
 
-int	ft_malloc(void *dst, size_t size)
+void	philo_does(t_data *data, int id, char *str)
 {
-	*(void **)dst = malloc(size);
-	if (*(void **)dst == NULL)
-		return (1);
-	memset(*(void **)dst, 0, size);
-	return (0);
-}
-
-long long	time_to_ms(struct timeval now)
-{
-	long long		ms;
-
-	ms = now.tv_sec * 1000;
-	ms += now.tv_usec / 1000;
-	return (ms);
-}
-
-void	print_philo_msg(t_philo *philo, char *str)
-{
-	long long		ms;
-	struct timeval	now;
-
-	pthread_mutex_lock(&philo->info->finish_mutex);
-	gettimeofday(&now, NULL);
-	ms = time_to_ms(now) - time_to_ms(philo->info->create_at);
-	if (!philo->info->finish)
-		printf("%lld\t%d\t %s\n", ms, philo->n + 1, str);
-	pthread_mutex_unlock(&philo->info->finish_mutex);
+	pthread_mutex_lock(&data->action_mutex);
+	if (!(data->dead))
+	{
+		printf("(%lli)\t ", timestamp() - data->time_birth);
+		printf("philo %i ", id + 1);
+		printf("%s\n", str);
+	}
+	pthread_mutex_unlock(&data->action_mutex);
+	return ;
 }
