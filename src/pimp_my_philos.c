@@ -6,7 +6,7 @@
 /*   By: ahouari <ahouari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 11:46:53 by ahouari           #+#    #+#             */
-/*   Updated: 2022/03/04 10:01:44 by ahouari          ###   ########.fr       */
+/*   Updated: 2022/03/05 09:57:22 by ahouari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,10 @@ int	init_philos(t_data *data)
 	{
 		data->philos[i].id = i;
 		data->philos[i].ate = 0;
-		data->philos[i].left_fork = i;
-		data->philos[i].right_fork = (i + 1) % data->nb_philos;
+		// data->philos[i].left_fork = i;
+		// data->philos[i].right_fork = (i + 1) % data->nb_philos;
+		data->philos[i].left_fork = i - 1;
+		data->philos[i].right_fork = i;
 		data->philos[i].time_eat = 0;
 		data->philos[i].data = data;
 	}
@@ -57,7 +59,7 @@ int	init_mutex(t_data *data)
 	return (true);
 }
 
-int	parse_all(t_data *data, char **av)
+int	pimp_my_philos(t_data *data, char **av)
 {
 	data->nb_philos = ft_atoi(av[1]);
 	data->time_to_die = ft_atoi(av[2]);

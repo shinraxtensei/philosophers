@@ -32,6 +32,7 @@ typedef struct s_data {
 	int					nb_must_eat;
 	int					dead;
 	int					all_ate;
+	int					*pid;
 	long long			time_birth;
 	sem_t				*forks;
 	sem_t				*action;
@@ -47,7 +48,7 @@ int				ft_atoi(const char *str);
 int				init_routine(t_data *data);
 void			dead_check(t_data *data, t_philos *philo);
 void			destroy_philos(t_data *data, t_philos *philo);
-void			*routine(void *void_philo);
+void			*philos_lifespan(void *void_philo);
 void			philo_eats(t_philos *philo);
 void			philo_does(t_data *data, int id, char *str);
 void			s_sleep(long long time, t_data *data);

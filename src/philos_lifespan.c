@@ -6,7 +6,7 @@
 /*   By: ahouari <ahouari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 11:16:48 by ahouari           #+#    #+#             */
-/*   Updated: 2022/03/04 10:03:45 by ahouari          ###   ########.fr       */
+/*   Updated: 2022/03/06 08:55:52 by ahouari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,17 @@ void	*routine(void *void_philo)
 
 	philo = (struct s_philos *)void_philo;
 	data = philo->data;
-	if (philo->id % 2)
-		usleep(20000);
-	while (!(data->dead))
+	// if (philo->id % 2)
+	// 	usleep(20000);
+	while (!(data->dead) && !(data->all_ate))
 	{
 		philo_eats(philo);
-		if (data->all_ate)
-			break ;
+		// if (data->all_ate)
+		// 	break ;
 		philo_does(data, philo->id, "is sleeping");
 		s_sleep(data->time_to_sleep, data);
-		philo_does(data, philo->id, "is thinking");
+		philo_does(data, philo->id, "is overthinking");
+
 	}
 	return (NULL);
 }

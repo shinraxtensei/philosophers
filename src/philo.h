@@ -6,7 +6,7 @@
 /*   By: ahouari <ahouari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 11:47:22 by ahouari           #+#    #+#             */
-/*   Updated: 2022/03/04 09:42:06 by ahouari          ###   ########.fr       */
+/*   Updated: 2022/03/04 17:39:39 by ahouari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,10 @@ typedef struct s_data {
 }	t_data;
 
 void			error(int error);
-int				parse_all(t_data *data, char **av);
+int				pimp_my_philos(t_data *data, char **av);
 int				init_mutex(t_data *data);
 int				init_philos(t_data *data);
-int				ft_atoi(const char *str);
-int				init_routine(t_data *data);
+int				threads_creation(t_data *data);
 void			dead_check(t_data *data, t_philos *philo);
 void			destroy_philos(t_data *data, t_philos *philo);
 void			*routine(void *void_philo);
@@ -65,4 +64,5 @@ void			philo_one(t_philos *philo);
 long long		m_time(long long past, long long pres);
 long long		timestamp(void);
 
+int				ft_atoi(const char *str);
 #endif

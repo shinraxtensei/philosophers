@@ -23,15 +23,14 @@ void	philo_eats(t_philos *philo)
 		sem_post(data->forks);
 	}
 }
-void	*routine(void *void_philo)
+void	*philos_lifespan(void *void_philo)
 {
 	t_philos	*philo;
 	t_data		*data;
 
+
 	philo = (struct s_philos *)void_philo;
 	data = philo->data;
-	if (philo->id % 2)
-		usleep(20000);
 	while (!(data->dead))
 	{
 		philo_eats(philo);
