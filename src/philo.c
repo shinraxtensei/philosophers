@@ -6,7 +6,7 @@
 /*   By: ahouari <ahouari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 11:47:05 by ahouari           #+#    #+#             */
-/*   Updated: 2022/03/11 08:54:51 by ahouari          ###   ########.fr       */
+/*   Updated: 2022/03/13 14:21:01 by ahouari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,18 @@ int	threads_creation(t_data *data)
 	data->time_birth = timestamp();
 	while (i < data->nb_philos)
 	{
-		if (philo->id % 2)
-			usleep(20000);
 		if (pthread_create(&philo[i].philo_thread, NULL, &routine, &philo[i]))
 			return (false);
 		philo[i].time_eat = timestamp();
-		i++;
+		i += 2;
+	}
+	i = 1;
+	while (i < data->nb_philos)
+	{
+		if (pthread_create(&philo[i].philo_thread, NULL, &routine, &philo[i]))
+			return (false);
+		philo[i].time_eat = timestamp();
+		i += 2;
 	}
 	dead_check(data, data->philos);
 	destroy_philos(data, philo);
@@ -68,6 +74,5 @@ int	main(int ac, char **av)
 		return (error(2), false);
 	if (!(threads_creation(&data)))
 		return (error(3), false);
-	while (1)
 	return (true);
 }

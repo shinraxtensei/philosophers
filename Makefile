@@ -9,7 +9,7 @@ SRCS = src/philo.c src/pimp_my_philos.c src/utils.c \
 
 SRCS_BONUS = src_bonus/monitor.c src_bonus/philo_bonus.c \
 			src_bonus/philos_lifespan.c src_bonus/pimp_my_philos.c \
-			src_bonus/utils.c
+			src_bonus/utils.c src_bonus/processes_ruler.c
 
 OBJS = $(SRCS:.c=.o)
 

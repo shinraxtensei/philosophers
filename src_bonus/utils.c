@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ahouari <ahouari@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/13 12:58:41 by ahouari           #+#    #+#             */
+/*   Updated: 2022/03/15 10:02:40 by ahouari          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_bonus.h"
 
 int	ft_atoi(const char *str)
@@ -21,7 +33,7 @@ int	ft_atoi(const char *str)
 	return (result);
 }
 
-long long	timestamp(void)
+unsigned long	timestamp(void)
 {
 	struct timeval	t;
 
@@ -47,15 +59,15 @@ void	s_sleep(long long time, t_data *data)
 	}
 }
 
-void	philo_does(t_data *data, int id, char *str)
+void	philo_does(t_philos *philo, int id, char *str)
 {
-	sem_wait(data->action);
-	if (!(data->dead))
+	sem_wait(philo->data->action);
+	if (!(philo->data->dead))
 	{
-		printf("(%lli)\t ", timestamp() - data->time_birth);
-		printf("philo %i ", id + 1);
+		printf("(%lu)\t ", timestamp() - philo->data->time_birth);
+		printf("philo %i ", id);
 		printf("%s\n", str);
 	}
-	sem_post(data->action);
+	sem_post(philo->data->action);
 	return ;
 }

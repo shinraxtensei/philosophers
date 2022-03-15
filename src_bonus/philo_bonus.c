@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo_bonus.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ahouari <ahouari@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/13 12:51:44 by ahouari           #+#    #+#             */
+/*   Updated: 2022/03/15 09:39:56 by ahouari          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_bonus.h"
 
-void	error(int error)
+static void	error(int error)
 {
 	if (error == 1)
 		printf("Wrong amount of args.\n");
@@ -11,40 +23,14 @@ void	error(int error)
 	return ;
 }
 
-static void	create_processes(t_data *data, int *pid)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->nb_philos)
-	{
-		pid[i] = fork();
-		if (pid[i] == 0)
-			philos_lifespan(data , i);
-		i++;
-	}
-}
-
-void	kill_processes(t_data *param)
-{
-	int	i;
-
-	i = 0;
-	while (i < param->nb_philos)
-	{
-		kill(param->pid[i], SIGINT);
-		i++;
-	}
-}
-
 void	destroy_philos(t_data *data)
 {
 	sem_close(data->forks);
 	sem_close(data->action);
 	sem_close(data->eat);
-	sem_unlink("/philo_forks");
-	sem_unlink("/philo_action");
-	sem_unlink("/philo_eat");
+	sem_unlink("philo_forks");
+	sem_unlink("philo_action");
+	sem_unlink("philo_eat");
 }
 
 int	init_routine(t_data *data)
@@ -52,7 +38,6 @@ int	init_routine(t_data *data)
 	int		i;
 
 	i = 0;
-	data->time_birth = timestamp();
 	data->pid = malloc(sizeof(int) * data->nb_philos);
 	if (!data->pid)
 		exit(1);
@@ -61,7 +46,7 @@ int	init_routine(t_data *data)
 	{
 		waitpid(data->pid[i++], 0, 0);
 	}
-	kill_processes(data);
+	processes_slayer(data);
 	destroy_philos(data);
 	return (true);
 }

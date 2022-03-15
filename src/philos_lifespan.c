@@ -6,7 +6,7 @@
 /*   By: ahouari <ahouari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 11:16:48 by ahouari           #+#    #+#             */
-/*   Updated: 2022/03/06 08:55:52 by ahouari          ###   ########.fr       */
+/*   Updated: 2022/03/13 14:55:55 by ahouari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	philo_one(t_philos *philo)
 	t_data	*data;
 
 	data = philo->data;
-	philo_does(data, philo->id, "has taken a fork");
+	philo_does(data, philo->id, "has taken a fork\n");
 	s_sleep(data->time_to_die, data);
 	dead_check(data, data->philos);
 }
@@ -32,11 +32,11 @@ void	philo_eats(t_philos *philo)
 	else
 	{
 		pthread_mutex_lock(&data->fork_mutex[philo->left_fork]);
-		philo_does(data, philo->id, "has taken a fork");
+		philo_does(data, philo->id, "has taken a fork\n");
 		pthread_mutex_lock(&data->fork_mutex[philo->right_fork]);
-		philo_does(data, philo->id, "has taken a fork");
+		philo_does(data, philo->id, "has taken a fork\n");
 		pthread_mutex_lock(&data->eat_mutex);
-		philo_does(data, philo->id, "is eating");
+		philo_does(data, philo->id, "is eating\n");
 		philo->time_eat = timestamp();
 		pthread_mutex_unlock(&data->eat_mutex);
 		s_sleep(data->time_to_eat, data);
@@ -53,17 +53,12 @@ void	*routine(void *void_philo)
 
 	philo = (struct s_philos *)void_philo;
 	data = philo->data;
-	// if (philo->id % 2)
-	// 	usleep(20000);
 	while (!(data->dead) && !(data->all_ate))
 	{
 		philo_eats(philo);
-		// if (data->all_ate)
-		// 	break ;
-		philo_does(data, philo->id, "is sleeping");
+		philo_does(data, philo->id, "is sleeping\n");
 		s_sleep(data->time_to_sleep, data);
-		philo_does(data, philo->id, "is overthinking");
-
+		philo_does(data, philo->id, "is overthinking\n");
 	}
 	return (NULL);
 }
