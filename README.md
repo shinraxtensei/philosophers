@@ -1,5 +1,23 @@
 # philosophers
 
+# ft_libft
+
+[Get_next_line](https://www.notion.so/Get_next_line-043526f2ff2849feaefaf04b3e8ff46e)
+
+[minitalk](https://www.notion.so/minitalk-44aab71262f74b679abfb49d5da1b8aa)
+
+[ft_printf](https://www.notion.so/ft_printf-6071f0b0d3fa4889adae581cfd0e6a0e)
+
+[so_long](https://www.notion.so/so_long-cc1965d39ca54920989c90c72e76174e)
+
+[born2beroot](https://www.notion.so/born2beroot-ca3043b3ffd040829aa4b8db35e25f46)
+
+[philosophers](https://www.notion.so/philosophers-d3fa38c2655b42a99b31e045c9c0f28f)
+
+[minishel](https://www.notion.so/minishel-6e57178233974903a0324bf84bbb571b)
+
+
+
 # threads_mutex(mandatory)
 
 - pthread_create :
