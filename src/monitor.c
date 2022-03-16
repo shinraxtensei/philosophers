@@ -6,37 +6,33 @@
 /*   By: ahouari <ahouari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 11:16:59 by ahouari           #+#    #+#             */
-/*   Updated: 2022/03/13 12:47:48 by ahouari          ###   ########.fr       */
+/*   Updated: 2022/03/16 10:35:19 by ahouari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	dead_check(t_data *data, t_philos *philo)
+void	*dead_check(t_data *data)
 {
-	int	i;
+	int				i;
 
-	while (!(data->all_ate))
+	while (1)
 	{
 		i = -1;
-		while (++i < data->nb_philos && !(data->dead))
+		while (++i < data->nb_philos)
 		{
-			pthread_mutex_lock(&data->eat_mutex);
-			if (m_time(philo[i].time_eat, timestamp()) > data->time_to_die)
+			if (data->philos[i].ate == data->nb_must_eat)
+				exit(1);
+			if (timestamp() - (unsigned long)data->philos[i].time_eat
+				> (unsigned long)data->time_to_die)
 			{
-				philo_does(data, i, "died");
 				data->dead = 1;
+				pthread_mutex_lock(&data->action_mutex);
+				printf("\033[0;31m%d died time: %lld\n",
+					i + 1, timestamp() - (unsigned long)data->time_birth);
+				exit(1);
 			}
-			pthread_mutex_unlock(&data->eat_mutex);
-			usleep(1000);
 		}
-		if (data->dead)
-			break ;
-		i = 0;
-		while ((data->nb_must_eat != -1) && (i < data->nb_philos)
-			&& (philo[i].ate >= data->nb_must_eat))
-			i++;
-		if (i == data->nb_philos)
-			data->all_ate = 1;
 	}
+	return (NULL);
 }

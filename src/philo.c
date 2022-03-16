@@ -6,7 +6,7 @@
 /*   By: ahouari <ahouari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 11:47:05 by ahouari           #+#    #+#             */
-/*   Updated: 2022/03/13 14:21:01 by ahouari          ###   ########.fr       */
+/*   Updated: 2022/03/16 10:39:37 by ahouari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	threads_creation(t_data *data)
 	{
 		if (pthread_create(&philo[i].philo_thread, NULL, &routine, &philo[i]))
 			return (false);
-		philo[i].time_eat = timestamp();
+		usleep(500);
 		i += 2;
 	}
 	i = 1;
@@ -56,10 +56,10 @@ int	threads_creation(t_data *data)
 	{
 		if (pthread_create(&philo[i].philo_thread, NULL, &routine, &philo[i]))
 			return (false);
-		philo[i].time_eat = timestamp();
+		usleep(500);
 		i += 2;
 	}
-	dead_check(data, data->philos);
+	dead_check(data);
 	destroy_philos(data, philo);
 	return (true);
 }

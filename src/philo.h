@@ -6,7 +6,7 @@
 /*   By: ahouari <ahouari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 11:47:22 by ahouari           #+#    #+#             */
-/*   Updated: 2022/03/13 12:45:03 by ahouari          ###   ########.fr       */
+/*   Updated: 2022/03/16 09:11:10 by ahouari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 typedef struct s_philos {
 	int					id;
 	int					ate;
-	int					left_fork;
-	int					right_fork;
+	pthread_mutex_t		*left_fork;
+	pthread_mutex_t		*right_fork;
 	long long			time_eat;
 	pthread_t			philo_thread;
 	struct s_data		*data;
@@ -54,7 +54,7 @@ int				pimp_my_philos(t_data *data, char **av);
 int				init_mutex(t_data *data);
 int				init_philos(t_data *data);
 int				threads_creation(t_data *data);
-void			dead_check(t_data *data, t_philos *philo);
+void			*dead_check(t_data *data);
 void			destroy_philos(t_data *data, t_philos *philo);
 void			*routine(void *void_philo);
 void			philo_eats(t_philos *philo);

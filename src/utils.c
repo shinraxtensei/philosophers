@@ -6,7 +6,7 @@
 /*   By: ahouari <ahouari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 12:52:37 by ahouari           #+#    #+#             */
-/*   Updated: 2022/03/14 17:44:09 by ahouari          ###   ########.fr       */
+/*   Updated: 2022/03/16 09:35:04 by ahouari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	s_sleep(long long time, t_data *data)
 	{
 		if (m_time(i, timestamp()) >= time)
 			break ;
-		usleep(50);
+		usleep(500);
 	}
 }
 
